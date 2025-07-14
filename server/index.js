@@ -40,8 +40,8 @@ app.get('/api/blogs', async (req, res) => {
     const blogs = await Blog.find({});
     console.log(blogs)
     res.send(blogs)
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
