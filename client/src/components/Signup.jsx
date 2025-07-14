@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {createUserWithEmailAndPassword} from "firebase/auth"
+import {createUserWithEmailAndPassword,signOut} from "firebase/auth"
 import auth from "../config/firebase.js"
 function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [newUser,setNewUser]=useState(false)
     const navigate = useNavigate(); // Hook from React Router for navigation
 
 
 
      useEffect(()=>{
              auth.onAuthStateChanged((user)=>{
-            if(user){
+            if(user&&!newUser){
                 navigate("/home")
             }
             else{
@@ -21,7 +22,7 @@ function Signup() {
             }
         })
         },[navigate])
-    const handleSubmit = (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault();
 
        
@@ -34,9 +35,14 @@ function Signup() {
             return;
         }
 
-        createUserWithEmailAndPassword(auth,email,password).then((res)=>{
+        createUserWithEmailAndPassword(auth,email,password).then(async(res)=>{
             console.log(res)
-            navigate('/login'); // Replace '/login' with your login page route
+            setNewUser(true)
+            await signOut(auth)
+         
+
+                navigate('/login'); // Replace '/login' with your login page route
+         
 
         }).catch((err)=>{
             console.log("failed to add user",err)

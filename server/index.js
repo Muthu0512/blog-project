@@ -5,6 +5,7 @@
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose";
+import {MongoClient} from "mongodb"
 // const cors = require("cors")
 
 const app = express();
@@ -16,9 +17,11 @@ app.use(cors())
 app.use(express.json())
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/blogDB').then(()=>{
+mongoose.connect('mongodb+srv://bloguser:Blog%40123@blog-cluster.v4bnczx.mongodb.net/?retryWrites=true&w=majority&appName=Blog-cluster').then(()=>{
     console.log("Connection Successfull")
 })
+
+
 
 
 // Define Schema
